@@ -330,7 +330,7 @@ class MySqlGrammarEncrypt extends GrammarEncrypt
      */
     protected function wrapValueEncrypt($value)
     {
-        return "CONCAT(AES_ENCRYPT({$value}, @AESKEY))";
+        return "AES_ENCRYPT({$value}, @AESKEY)";
     }
 
     /**

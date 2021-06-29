@@ -3,7 +3,6 @@
 namespace redsd\AESEncrypt\Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use redsd\AESEncrypt\Database\Query\BuilderEncrypt as QueryBuilder;
 
 abstract class ModelEncrypt extends Model
@@ -14,35 +13,6 @@ abstract class ModelEncrypt extends Model
      * @var string
      */
     protected $fillableEncrypt = [];
-
-    /**
-     * Create a new Eloquent model instance.
-     *
-     * @param  array  $attributes
-     * @return void
-     */
-    public function __construct(array $attributes = [])
-    {
-        $this->bootIfNotBooted();
-
-        $this->initializeTraits();
-
-        $this->syncOriginal();
-
-        $this->fill($attributes);
-
-        $this->setSessionVariables();
-    }
-
-    public function setSessionVariables()
-    {
-        static $mysql_session_set;
-        if (!isset($mysql_session_set)) {
-            $key = env('APP_AESENCRYPT_KEY');
-            DB::statement(sprintf("SET @AESKEY = '%s'", $key));
-            $mysql_session_set = true;
-        }
-    }
 
 
     /**
