@@ -2,14 +2,16 @@
 
 namespace redsd\AESEncrypt\Database\Connectors;
 
-use Illuminate\Database\Connectors\ConnectionFactory;
-
-use InvalidArgumentException;
 use Illuminate\Database\Connection;
-use redsd\AESEncrypt\Database\MySqlConnectionEncrypt;
-use Illuminate\Database\SQLiteConnection;
+use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\Connectors\PostgresConnector;
+use Illuminate\Database\Connectors\SQLiteConnector;
+use Illuminate\Database\Connectors\SqlServerConnector;
 use Illuminate\Database\PostgresConnection;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\SqlServerConnection;
+use InvalidArgumentException;
+use redsd\AESEncrypt\Database\MySqlConnectionEncrypt;
 
 class ConnectionFactoryEncrypt extends ConnectionFactory
 {
@@ -43,5 +45,37 @@ class ConnectionFactoryEncrypt extends ConnectionFactory
         }
 
         throw new InvalidArgumentException("Unsupported driver [$driver]");
+    }
+
+    /**
+     * Create a connector instance based on the configuration.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Database\Connectors\ConnectorInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createConnector(array $config)
+    {
+        if (! isset($config['driver'])) {
+            throw new InvalidArgumentException('A driver must be specified.');
+        }
+
+        if ($this->container->bound($key = "db.connector.{$config['driver']}")) {
+            return $this->container->make($key);
+        }
+
+        switch ($config['driver']) {
+            case 'mysql':
+                return new MySqlConnectorEncrypt();
+            case 'pgsql':
+                return new PostgresConnector;
+            case 'sqlite':
+                return new SQLiteConnector;
+            case 'sqlsrv':
+                return new SqlServerConnector;
+        }
+
+        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}]");
     }
 }
