@@ -10,12 +10,18 @@ use InvalidArgumentException;
 
 class MySqlGrammarEncrypt extends GrammarEncrypt
 {
-
     protected $AESENCRYPT_KEY;
     protected $AESENCRYPT_MODE;
 
-    public function __construct()
+    private $charset;
+
+    /**
+     * @param string $charset
+     */
+    public function __construct($charset)
     {
+        $this->charset = $charset;
+
         $this->AESENCRYPT_KEY = env('APP_AESENCRYPT_KEY');
         $this->AESENCRYPT_MODE = env('APP_AESENCRYPT_MODE', 'aes-256-cbc');
 
@@ -319,7 +325,7 @@ class MySqlGrammarEncrypt extends GrammarEncrypt
      */
     protected function wrapValueDecrypt($value)
     {
-        return "CONVERT(AES_DECRYPT({$value}, @AESKEY) USING utf8mb4)";
+        return "CONVERT(AES_DECRYPT({$value}, @AESKEY) USING {$this->charset})";
     }
 
     /**

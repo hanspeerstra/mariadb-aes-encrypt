@@ -16,6 +16,13 @@ class MySqlConnectionEncrypt extends MySqlConnection
      */
     protected function getDefaultQueryGrammar()
     {
-        return $this->withTablePrefix(new QueryGrammar);
+        // default charset
+        $charset = 'utf8mb4';
+
+        if (isset($this->config['charset'])) {
+            $charset = $this->config['charset'];
+        }
+
+        return $this->withTablePrefix(new QueryGrammar($charset));
     }
 }
