@@ -7,7 +7,7 @@
 * [Decrypt your data in MySQL](#decrypt-your-data-in-mySQL)
 
 
-# Laravel 6.x & 5.x MySql AES Encrypt/Decrypt
+# Laravel 7.x MySql AES Encrypt/Decrypt
 Based on https://github.com/devmaster10/mysql-aes-encrypt
 
 Improvements:
@@ -16,7 +16,7 @@ Improvements:
 - Added use of MySQL session variables to prevent the encryption key from being outputted when an sql error occures.
 - Added laravel 6 support
 
-Laravel 5.x & 6.x Database Encryption in mysql side, use native mysql function AES_DECRYPT and AES_ENCRYPT<br>
+Laravel Database Encryption in mysql side, use native mysql function AES_DECRYPT and AES_ENCRYPT<br>
 Auto encrypt and decrypt signed fields/columns in your Model<br>
 Can use all functions of Eloquent/Model<br>
 You can perform the operations "=>, <',' between ',' LIKE ' in encrypted columns<br>
@@ -25,7 +25,7 @@ You can perform the operations "=>, <',' between ',' LIKE ' in encrypted columns
 ## 1.Install the package via Composer:
 
 ```php
-For laravel 6.x:
+For laravel 6.x & 7.x:
 $ composer require redsd/aesencrypt:6.0.x-dev
 
 For laravel 5.x:
@@ -49,7 +49,7 @@ namespace App\Models;
 use redsd\AESEncrypt\Database\Eloquent\ModelEncrypt;
 
 class Person extends ModelEncrypt
-{    
+{
     /**
      * The attributes that are encrypted.
      *
@@ -69,17 +69,13 @@ It adds new features to Schema which you can use in your migrations:
     Schema::create('persons', function (Blueprint $table) {
         // here you do all columns supported by the schema builder
         $table->increments('id')->unsigned;
-        $table->string('description', 250);
-        $table ->unsignedInteger('created_by')->nullable();
-        $table ->unsignedInteger('updated_by')->nullable();
+        $table->string('description', 250)->nullable();
+        $table->timestamps();
     });
-    
+
     // once the table is created use a raw query to ALTER it and add the BLOB, MEDIUMBLOB or LONGBLOB
-    DB::statement("ALTER TABLE persons ADD name MEDIUMBLOB after id");  
+    DB::statement("ALTER TABLE persons ADD name MEDIUMBLOB after id");
 ```
-
-
-});
 
 ## Set encryption settings in .env file
 
@@ -122,7 +118,7 @@ UPDATE your_table SET your_column = aes_encrypt_string(your_column, @AESKEY), yo
 ```
 The folowing code will ensure the only data that isn't encrypted yet will be encrypted, in case you need to run the query multiple times.
 
-If you cannot create MySQL functions you can perform the following but this will use the same IV for every record which is less secure. 
+If you cannot create MySQL functions you can perform the following but this will use the same IV for every record which is less secure.
 ```sql
 SET @@SESSION.block_encryption_mode = 'aes-256-cbc';
 SET @AESKEY = 'yourencryptedkey';
@@ -148,7 +144,7 @@ SET @@SESSION.block_encryption_mode = 'aes-256-cbc';
 SET @AESKEY = 'yourencryptedkey';
 SELECT *, aes_decrypt_string(yourEncryptedColum, @AESKEY) decryptedColumn, aes_decrypt_string(yourEncryptedColum2, @AESKEY) decryptedColumn2  FROM yourtable;
 ```
-Or if you cannot or do not want to use a MySQL function you can use the following query 
+Or if you cannot or do not want to use a MySQL function you can use the following query
 ```sql
 SET @@SESSION.block_encryption_mode = 'aes-256-cbc';
 SET @AESKEY = 'yourencryptedkey';
