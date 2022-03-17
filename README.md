@@ -7,7 +7,7 @@
 * [Decrypt your data in MySQL](#decrypt-your-data-in-mySQL)
 
 
-# Laravel 7.x MySql AES Encrypt/Decrypt
+# Laravel MySql AES Encrypt/Decrypt
 Based on https://github.com/devmaster10/mysql-aes-encrypt
 
 Improvements:
