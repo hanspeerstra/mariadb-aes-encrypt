@@ -25,7 +25,16 @@ You can perform the operations "=>, <',' between ',' LIKE ' in encrypted columns
 ## 1.Install the package via Composer:
 
 ```php
-For laravel 6.x & 7.x:
+For laravel 9.x:
+$ composer require redsd/aesencrypt:9.0.x-dev
+
+For laravel 8.x:
+$ composer require redsd/aesencrypt:8.0.x-dev
+
+For laravel 7.x:
+$ composer require redsd/aesencrypt:7.0.x-dev
+
+For laravel 6.x:
 $ composer require redsd/aesencrypt:6.0.x-dev
 
 For laravel 5.x:
