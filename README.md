@@ -14,7 +14,7 @@ Improvements:
 - Added improved security by using an unique IV for each encrypted field.
 - Added support for multiple encryption methods including: aes-256-cbc
 - Added use of MySQL session variables to prevent the encryption key from being outputted when an sql error occures.
-- Added laravel 6 support
+- Added laravel 9 support
 
 Laravel Database Encryption in mysql side, use native mysql function AES_DECRYPT and AES_ENCRYPT<br>
 Auto encrypt and decrypt signed fields/columns in your Model<br>
