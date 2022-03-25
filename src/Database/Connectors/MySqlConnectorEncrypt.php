@@ -7,6 +7,16 @@ use Illuminate\Database\Connectors\MySqlConnector;
 class MySqlConnectorEncrypt extends MySqlConnector
 {
     /**
+     * @var string
+     */
+    private $encryptionKey;
+
+    public function __construct($encryptionKey)
+    {
+        $this->encryptionKey = $encryptionKey;
+    }
+
+    /**
      * Establish a database connection.
      *
      * @param  array  $config
@@ -16,7 +26,7 @@ class MySqlConnectorEncrypt extends MySqlConnector
     {
         $connection = parent::connect($config);
 
-        $this->setEncryptionKeySessionVariable($connection, env('APP_AESENCRYPT_KEY'));
+        $this->setEncryptionKeySessionVariable($connection, $this->encryptionKey);
 
         return $connection;
     }
