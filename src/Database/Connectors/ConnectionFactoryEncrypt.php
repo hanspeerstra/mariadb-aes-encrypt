@@ -35,7 +35,14 @@ class ConnectionFactoryEncrypt extends ConnectionFactory
 
         switch ($driver) {
             case 'mysql':
-                return new MySqlConnectionEncrypt($connection, $database, $prefix, $config);
+                return new MySqlConnectionEncrypt(
+                    $connection,
+                    $database,
+                    $prefix,
+                    $config,
+                    $this->getEncryptionKey(),
+                    $this->getEncryptionMode()
+                );
             case 'pgsql':
                 return new PostgresConnection($connection, $database, $prefix, $config);
             case 'sqlite':
@@ -67,7 +74,7 @@ class ConnectionFactoryEncrypt extends ConnectionFactory
 
         switch ($config['driver']) {
             case 'mysql':
-                return new MySqlConnectorEncrypt();
+                return new MySqlConnectorEncrypt($this->getEncryptionKey());
             case 'pgsql':
                 return new PostgresConnector;
             case 'sqlite':
@@ -77,5 +84,15 @@ class ConnectionFactoryEncrypt extends ConnectionFactory
         }
 
         throw new InvalidArgumentException("Unsupported driver [{$config['driver']}]");
+    }
+
+    private function getEncryptionKey()
+    {
+        return $this->container->get('config')->get('aesEncrypt.key');
+    }
+
+    private function getEncryptionMode()
+    {
+        return $this->container->get('config')->get('aesEncrypt.mode');
     }
 }

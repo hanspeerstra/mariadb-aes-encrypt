@@ -2,9 +2,9 @@
 
 namespace redsd\AESEncrypt\Database;
 
-use redsd\AESEncrypt\Database\Connectors\ConnectionFactoryEncrypt;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\DatabaseServiceProvider;
+use redsd\AESEncrypt\Database\Connectors\ConnectionFactoryEncrypt;
 
 class DatabaseServiceProviderEncrypt extends DatabaseServiceProvider
 {
@@ -15,6 +15,11 @@ class DatabaseServiceProviderEncrypt extends DatabaseServiceProvider
      */
     protected function registerConnectionServices()
     {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/aesEncrypt.php',
+            'aesEncrypt'
+        );
+
         // The connection factory is used to create the actual connection instances on
         // the database. We will inject the factory into the manager so that it may
         // make the connections while they are actually needed and not of before.
