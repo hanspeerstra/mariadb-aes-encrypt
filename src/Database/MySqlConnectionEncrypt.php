@@ -4,11 +4,20 @@ namespace redsd\AESEncrypt\Database;
 
 use Illuminate\Database\MySqlConnection;
 
-use redsd\AESEncrypt\Database\Schema\MySqlBuilderEncrypt;
 use redsd\AESEncrypt\Database\Query\Grammars\MySqlGrammarEncrypt as QueryGrammar;
 
 class MySqlConnectionEncrypt extends MySqlConnection
 {
+    private $encryptionKey;
+    private $encryptionMode;
+
+    public function __construct($pdo, $database, $tablePrefix, array $config, $encryptionKey, $encryptionMode)
+    {
+        $this->encryptionKey = $encryptionKey;
+        $this->encryptionMode = $encryptionMode;
+        parent::__construct($pdo, $database, $tablePrefix, $config);
+    }
+
     /**
      * Get the default query grammar instance.
      *
@@ -23,6 +32,6 @@ class MySqlConnectionEncrypt extends MySqlConnection
             $charset = $this->config['charset'];
         }
 
-        return $this->withTablePrefix(new QueryGrammar($charset));
+        return $this->withTablePrefix(new QueryGrammar($charset, $this->encryptionKey, $this->encryptionMode));
     }
 }
