@@ -7,14 +7,14 @@
 * [Decrypt your data in MySQL](#decrypt-your-data-in-mySQL)
 
 
-# Laravel 7.x MySql AES Encrypt/Decrypt
+# Laravel MySql AES Encrypt/Decrypt
 Based on https://github.com/devmaster10/mysql-aes-encrypt
 
 Improvements:
 - Added improved security by using an unique IV for each encrypted field.
 - Added support for multiple encryption methods including: aes-256-cbc
 - Added use of MySQL session variables to prevent the encryption key from being outputted when an sql error occures.
-- Added laravel 6 support
+- Added laravel 9 support
 
 Laravel Database Encryption in mysql side, use native mysql function AES_DECRYPT and AES_ENCRYPT<br>
 Auto encrypt and decrypt signed fields/columns in your Model<br>
@@ -26,19 +26,19 @@ You can perform the operations "=>, <',' between ',' LIKE ' in encrypted columns
 
 ```php
 For laravel 9.x:
-$ composer require redsd/aesencrypt:9.0.x-dev
+$ composer require redsd/aesencrypt:9.x
 
 For laravel 8.x:
-$ composer require redsd/aesencrypt:8.0.x-dev
+$ composer require redsd/aesencrypt:8.x
 
 For laravel 7.x:
-$ composer require redsd/aesencrypt:7.0.x-dev
+$ composer require redsd/aesencrypt:7.x
 
 For laravel 6.x:
-$ composer require redsd/aesencrypt:6.0.x-dev
+$ composer require redsd/aesencrypt:6.x
 
 For laravel 5.x:
-$ composer require redsd/aesencrypt:5.0.x-dev
+$ composer require redsd/aesencrypt:5.x
 ```
 ## 2.Configure provider
 You'll need to add to add a service provider if you are using Laravel 5.4 or lower or if the encryption is not working, add to following in config/app.php:
