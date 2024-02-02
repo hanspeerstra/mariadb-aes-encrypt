@@ -3,6 +3,7 @@
 namespace redsd\AESEncrypt\Database;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Str;
 
 class GrammarEncrypt extends \Illuminate\Database\Query\Grammars\Grammar
@@ -521,7 +522,7 @@ class GrammarEncrypt extends \Illuminate\Database\Query\Grammars\Grammar
      * @return array
      */
     public function addColumnsToWildcard(array $columns, array $columnsEncrypt){
-        if (!empty($columns) && Str::endsWith($columns[0], '*')) {
+        if (!empty($columns) && Str::endsWith($this->isExpression($columns[0]) ? $this->getValue($columns[0]) : $columns[0], '*')) {
             $columns = array_merge($columns, $columnsEncrypt);
         }
         return $columns;
